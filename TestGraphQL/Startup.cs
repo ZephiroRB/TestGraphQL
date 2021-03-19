@@ -22,6 +22,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using TestGraphQL.GraphQL.Product.Query;
+using TestGraphQL.GraphQL.Product.Mutation;
+using TestGraphQL.GraphQL.Product.Support;
+//using TestGraphQL.GraphQL.Product.Mutation;
+//using TestGraphQL.GraphQL.Product.Support;
 
 namespace TestGraphQL
 {
@@ -50,7 +54,15 @@ namespace TestGraphQL
                .AddSorting()
                .AddType(new UuidType(defaultFormat: 'D'))
                .AddQueryType(d => d.Name("Query"))
-               .AddType<ProductQuery>();
+               .AddType<ProductQuery>()
+             .AddMutationType(d => d.Name("Mutation"))
+                .AddType<ProductMutation>()
+                .AddSubscriptionType(d => d.Name("Subscription"))
+                .AddType<ProductSubscription>()
+                 .AddFiltering()
+                .AddSorting()
+                .AddInMemorySubscriptions();
+                //.AddDataLoader<CustomerByIdDataLoader>();
 
             //services.AddSwaggerGen(c =>
             //{

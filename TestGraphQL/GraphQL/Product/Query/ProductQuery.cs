@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TestGraphQL.Extensions;
 using TestGraphQL.Data;
 using TestGraphQL.GraphQL.Product.Support;
+using FizzWare.NBuilder;
 
 namespace TestGraphQL.GraphQL.Product.Query
 {
@@ -22,7 +23,9 @@ namespace TestGraphQL.GraphQL.Product.Query
         {
             try
             {
+
                 return context.Products.AsQueryable();
+                //return null;
             }
             catch (Exception ex)
             {
