@@ -1,0 +1,57 @@
+﻿query
+{
+  customer(id:"FCA6A362-E315-4D47-F393-08D8E3BD4D0F")
+  {
+      id
+      name
+      displayName
+      webSite
+      isDataBaseCreated
+      Region
+      {
+        id
+        name
+        Customer
+        {
+          id
+        }
+      }
+      
+  }
+
+}
+
+query
+{
+  region(id:"27400220-0322-49B3-B4AF-08D8D968DE65")
+  {
+    id
+    name
+    Customer
+    {
+      id
+      displayName
+      webSite
+    }
+  }
+}
+
+query
+{
+  regionsFromDQT
+  {
+    nodes
+    {
+      id
+      name
+      Customer
+      {
+        id
+        displayName
+        mainPhone
+        webSite
+        dataBaseCreatedDate
+      }
+    }
+  }
+}

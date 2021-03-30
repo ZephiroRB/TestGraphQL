@@ -5,25 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TestGraphQL.Data;
-
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using TestGraphQL.GraphQL.Product.Query;
 using TestGraphQL.GraphQL.Product.Mutation;
 using TestGraphQL.GraphQL.Product.Support;
+using HotChocolate;
+using TestGraphQL.Models;
+using TestGraphQL.GraphQL;
+using TestGraphQL.Resolver;
 //using TestGraphQL.GraphQL.Product.Mutation;
 //using TestGraphQL.GraphQL.Product.Support;
 
@@ -48,21 +42,38 @@ namespace TestGraphQL
             opt.UseSqlServer
            (this.Configuration.GetConnectionString("DqtConStr")));
 
+            services.AddPooledDbContextFactory<ApplicationDbContext>(opt =>
+            //opt.UseLazyLoadingProxies()
+            opt.UseSqlServer
+           (this.Configuration.GetConnectionString("ConStr")));
+
+
+
+            services.AddSingleton<IAuthorService, InMemoryAuthorService>();
+            services.AddSingleton<IBookService, InMemoryBookService>();
+
             services
                .AddGraphQLServer()
-                .AddFiltering()
+               .AddFiltering()
                .AddSorting()
                .AddType(new UuidType(defaultFormat: 'D'))
                .AddQueryType(d => d.Name("Query"))
                .AddType<ProductQuery>()
+               .AddType<BookQuery>()
+               .AddType<RegionQuery>()
+                .AddType<CustomerQuery>()
              .AddMutationType(d => d.Name("Mutation"))
                 .AddType<ProductMutation>()
                 .AddSubscriptionType(d => d.Name("Subscription"))
                 .AddType<ProductSubscription>()
-                 .AddFiltering()
+                .AddType<AuthorType>()
+                .AddType<BookType>()
+                .AddType<RegionType>()
+                .AddType<CustomerType>()
+                .AddFiltering()
                 .AddSorting()
                 .AddInMemorySubscriptions();
-                //.AddDataLoader<CustomerByIdDataLoader>();
+            //.AddDataLoader<CustomerByIdDataLoader>();
 
             //services.AddSwaggerGen(c =>
             //{

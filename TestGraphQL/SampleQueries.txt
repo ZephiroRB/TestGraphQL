@@ -1,0 +1,19 @@
+﻿mutation addProduct($input: AddProductInput!) {
+      addProduct(input: $input) {
+        product
+        {
+         
+          productName
+        }
+      }
+    }
+
+
+    {
+  "input": {
+    "productName": "Product Pramit"
+  }
+}
+
+
+===========================================================================

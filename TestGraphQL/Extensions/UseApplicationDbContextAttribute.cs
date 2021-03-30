@@ -17,6 +17,7 @@ namespace TestGraphQL.Extensions
             MemberInfo member)
         {
             descriptor.UseDbContext<NakodaAgenciesDbContext>();
+            descriptor.UseDbContext<ApplicationDbContext>();
         }
     }
 }
