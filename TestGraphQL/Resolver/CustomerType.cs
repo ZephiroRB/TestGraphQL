@@ -16,10 +16,10 @@ namespace TestGraphQL.Resolver
         protected override void Configure(IObjectTypeDescriptor<Customer> descriptor)
         {
             // descriptor.Field(c => c.Id).Ignore();
-            descriptor
-                 .ImplementsNode()
-                 .IdField(t => t.Id)
-                 .ResolveNode((ctx, id) => ctx.DataLoader<CustomerByIdDataLoader>().LoadAsync(id, ctx.RequestAborted));
+            //descriptor
+            //     .ImplementsNode()
+            //     .IdField(t => t.Id)
+            //     .ResolveNode((ctx, id) => ctx.DataLoader<CustomerByIdDataLoader>().LoadAsync(id, ctx.RequestAborted));
 
             descriptor
                 .Field(t => t.Region)

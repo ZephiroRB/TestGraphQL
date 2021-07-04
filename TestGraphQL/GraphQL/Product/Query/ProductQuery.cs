@@ -9,10 +9,12 @@ using TestGraphQL.Extensions;
 using TestGraphQL.Data;
 using TestGraphQL.GraphQL.Product.Support;
 using FizzWare.NBuilder;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TestGraphQL.GraphQL.Product.Query
 {
     [ExtendObjectType(Name = "Query")]
+    [Authorize]
     public class ProductQuery
     {
         [UseApplicationDbContextAttribute]

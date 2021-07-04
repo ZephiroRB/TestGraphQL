@@ -18,6 +18,7 @@ namespace TestGraphQL.GraphQL.Product.Support
             //   .UseDbContext<ApplicationDbContext>()
             //   .UsePaging<NonNullType<SessionType>>()
             //   .Name("sessions");
+            
         }
     }
 }

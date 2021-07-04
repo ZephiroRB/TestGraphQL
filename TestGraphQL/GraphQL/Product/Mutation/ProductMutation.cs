@@ -2,15 +2,20 @@
 using HotChocolate;
 using HotChocolate.Subscriptions;
 using HotChocolate.Types;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TestGraphQL.Data;
 using TestGraphQL.Enum;
 using TestGraphQL.Extensions;
 using TestGraphQL.GraphQL.Product.Support;
+using TestGraphQL.Token;
 
 namespace TestGraphQL.GraphQL.Product.Mutation
 {
@@ -55,7 +60,7 @@ namespace TestGraphQL.GraphQL.Product.Mutation
                                            ProductName = _region.ProductName,
                                            Active = _region.Active,
                                            CreatedDate = _region.CreatedDate
-                                           
+
                                        }).FirstOrDefault();
 
                 return new AddProductPayload(_regionResponse);
@@ -109,6 +114,48 @@ namespace TestGraphQL.GraphQL.Product.Mutation
             {
                 throw;
             }
+        }
+
+        private List<User> Users = new List<User>
+        {
+            new User{
+                Id = 1,
+                FirstName = "Naveen",
+                LastName = "Bommidi",
+                Email = "naveen@gmail.com",
+                Password="1234",
+                PhoneNumber="8888899999"
+            },
+            new User{
+                Id = 2,
+                FirstName = "Hemanth",
+                LastName = "Kumar",
+                Email = "hemanth@gmail.com",
+                Password = "abcd",
+                PhoneNumber = "2222299999"
+            }
+        };
+        public string UserLogin([Service] IOptions<TokenSettings> tokenSettings, LoginInput login)
+        {
+            var currentUser = Users.Where(_ => _.Email.ToLower() == login.Email.ToLower() &&
+            _.Password == login.Password).FirstOrDefault();
+
+            if (currentUser != null)
+            {
+                var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.Value.Key));
+                var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
+
+                var jwtToken = new JwtSecurityToken(
+                    issuer: tokenSettings.Value.Issuer,
+                    audience: tokenSettings.Value.Audience,
+                    expires: DateTime.Now.AddMinutes(20),
+                    signingCredentials: credentials
+                );
+
+                return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+
+            }
+            return "";
         }
     }
 }
